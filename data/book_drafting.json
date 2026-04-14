@@ -1,0 +1,15 @@
+{
+  "characters": {
+    "rieka": {
+      "title": "Wolfblood",
+      "description": "A human raised by orcs.",
+      "parent": "Solveig Debán"
+    }
+  },
+  "locations": {
+    "leofricburh": {
+      "description": "A small village with political tension.",
+      "notable_npcs": ["Blaine the Blacksmith"]
+    }
+  }
+}
