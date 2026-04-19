@@ -44,7 +44,7 @@ class LoreCommands(commands.Cog):
     @app_commands.command(name="help", description="Show all available Archivist commands")
     async def help_command(self, interaction: discord.Interaction):
         embed = discord.Embed(
-            title="📖 The Archivist — Command Reference",
+            title="📖 OmniTome — Command Reference",
             description="All commands are channel-aware. Lore is scoped to the channel you're in.",
             color=EMBED_COLORS["help"]
         )
@@ -55,7 +55,10 @@ class LoreCommands(commands.Cog):
         embed.add_field(name="📅 Timeline", value="`/timeline` `/addevent` `/deleteevent`", inline=False)
         embed.add_field(name="⚙️ Custom Commands", value="`/addcommand` `/cmd` `/deletecommand`", inline=False)
         embed.add_field(name="🔍 Search & Tools", value="`/search` `/export` `/list`", inline=False)
-        embed.set_footer(text="The Archivist • Your Lore Keeper")
+        embed.add_field(name="🔗 Relationships", value="`/relationship` `/relationships`", inline=False)
+        embed.add_field(name="📝 Notes", value="`/addnote` `/note` `/listnotes` `/deletenote`", inline=False)
+        embed.add_field(name="🔍 Search & Tools", value="`/search` `/export` `/list` `/listall` `/random` `/rename`", inline=False)
+        embed.set_footer(text=" • Your Lore Keeper")
         await interaction.response.send_message(embed=embed)
 
     # --- BIO ---
@@ -76,7 +79,7 @@ class LoreCommands(commands.Cog):
         embed = discord.Embed(title=f"🧍 {name.title()}", description=character["description"], color=EMBED_COLORS["character"])
         embed.add_field(name="Title", value=character["title"], inline=True)
         embed.add_field(name="Parent", value=character["parent"], inline=True)
-        embed.set_footer(text=f"#{interaction.channel.name} • The Archivist")
+        embed.set_footer(text=f"#{interaction.channel.name} • OmniTome")
         await interaction.response.send_message(embed=embed)
 
     @app_commands.command(name="addcharacter", description="Add a character to this channel's lore")
@@ -90,7 +93,7 @@ class LoreCommands(commands.Cog):
         embed.add_field(name="Title", value=title, inline=True)
         embed.add_field(name="Parent", value=parent, inline=True)
         embed.add_field(name="Description", value=description, inline=False)
-        embed.set_footer(text=f"#{channel} • The Archivist")
+        embed.set_footer(text=f"#{channel} • OmniTome")
         await interaction.response.send_message(embed=embed)
 
     @app_commands.command(name="deletecharacter", description="Delete a character (Admin only)")
@@ -124,7 +127,7 @@ class LoreCommands(commands.Cog):
         embed = discord.Embed(title=f"🗺️ {name.title()}", description=location["description"], color=EMBED_COLORS["location"])
         npcs = ", ".join(location.get("notable_npcs", []))
         embed.add_field(name="Notable NPCs", value=npcs or "None", inline=False)
-        embed.set_footer(text=f"#{interaction.channel.name} • The Archivist")
+        embed.set_footer(text=f"#{interaction.channel.name} • OmniTome")
         await interaction.response.send_message(embed=embed)
 
     @app_commands.command(name="addlocation", description="Add a location to this channel's lore")
@@ -138,7 +141,7 @@ class LoreCommands(commands.Cog):
         embed = discord.Embed(title=f"✅ Location Added: {name.title()}", color=EMBED_COLORS["location"])
         embed.add_field(name="Description", value=description, inline=False)
         embed.add_field(name="Notable NPCs", value=npcs or "None", inline=False)
-        embed.set_footer(text=f"#{channel} • The Archivist")
+        embed.set_footer(text=f"#{channel} • OmniTome")
         await interaction.response.send_message(embed=embed)
 
     @app_commands.command(name="deletelocation", description="Delete a location (Admin only)")
@@ -170,7 +173,7 @@ class LoreCommands(commands.Cog):
         embed = discord.Embed(title=f"⚔️ {name.title()}", description=faction["description"], color=EMBED_COLORS["faction"])
         embed.add_field(name="Alignment", value=faction.get("alignment", "Unknown"), inline=True)
         embed.add_field(name="Members", value=faction.get("members", "Unknown"), inline=True)
-        embed.set_footer(text=f"#{interaction.channel.name} • The Archivist")
+        embed.set_footer(text=f"#{interaction.channel.name} • OmniTome")
         await interaction.response.send_message(embed=embed)
 
     @app_commands.command(name="addfaction", description="Add a faction to this channel's lore")
@@ -184,7 +187,7 @@ class LoreCommands(commands.Cog):
         embed.add_field(name="Alignment", value=alignment, inline=True)
         embed.add_field(name="Members", value=members or "None", inline=True)
         embed.add_field(name="Description", value=description, inline=False)
-        embed.set_footer(text=f"#{channel} • The Archivist")
+        embed.set_footer(text=f"#{channel} • OmniTome")
         await interaction.response.send_message(embed=embed)
 
     @app_commands.command(name="deletefaction", description="Delete a faction (Admin only)")
@@ -216,7 +219,7 @@ class LoreCommands(commands.Cog):
         embed = discord.Embed(title=f"🗡️ {name.title()}", description=item["description"], color=EMBED_COLORS["item"])
         embed.add_field(name="Type", value=item.get("type", "Unknown"), inline=True)
         embed.add_field(name="Owner", value=item.get("owner", "Unknown"), inline=True)
-        embed.set_footer(text=f"#{interaction.channel.name} • The Archivist")
+        embed.set_footer(text=f"#{interaction.channel.name} • OmniTome")
         await interaction.response.send_message(embed=embed)
 
     @app_commands.command(name="additem", description="Add an item to this channel's lore")
@@ -230,7 +233,7 @@ class LoreCommands(commands.Cog):
         embed.add_field(name="Type", value=type, inline=True)
         embed.add_field(name="Owner", value=owner, inline=True)
         embed.add_field(name="Description", value=description, inline=False)
-        embed.set_footer(text=f"#{channel} • The Archivist")
+        embed.set_footer(text=f"#{channel} • OmniTome")
         await interaction.response.send_message(embed=embed)
 
     @app_commands.command(name="deleteitem", description="Delete an item (Admin only)")
@@ -257,7 +260,7 @@ class LoreCommands(commands.Cog):
         events = sorted(data["timeline"], key=lambda e: e.get("date", ""))
         lines = "\n".join([f"**{e['date']}** — {e['title']}: {e['description']}" for e in events])
         embed = discord.Embed(title=f"📅 Timeline — #{interaction.channel.name}", description=lines, color=EMBED_COLORS["timeline"])
-        embed.set_footer(text="The Archivist • Your Lore Keeper")
+        embed.set_footer(text="OmniTome • Your Lore Keeper")
         await interaction.response.send_message(embed=embed)
 
     @app_commands.command(name="addevent", description="Add an event to this channel's timeline")
@@ -270,7 +273,7 @@ class LoreCommands(commands.Cog):
         embed = discord.Embed(title=f"✅ Event Added: {title}", color=EMBED_COLORS["timeline"])
         embed.add_field(name="Date", value=date, inline=True)
         embed.add_field(name="Description", value=description, inline=False)
-        embed.set_footer(text=f"#{channel} • The Archivist")
+        embed.set_footer(text=f"#{channel} • OmniTome")
         await interaction.response.send_message(embed=embed)
 
     @app_commands.command(name="deleteevent", description="Delete a timeline event by title (Admin only)")
@@ -313,7 +316,7 @@ class LoreCommands(commands.Cog):
         save_data(channel, data)
         embed = discord.Embed(title=f"✏️ Updated: {name.title()}", color=EMBED_COLORS["success"])
         embed.add_field(name=field.title(), value=value, inline=False)
-        embed.set_footer(text=f"#{channel} • The Archivist")
+        embed.set_footer(text=f"#{channel} • OmniTome")
         await interaction.response.send_message(embed=embed)
 
     # --- SEARCH ---
@@ -337,7 +340,7 @@ class LoreCommands(commands.Cog):
             await interaction.response.send_message(embed=error_embed("No results", f"Nothing matched `{term}` in this channel's lore."))
             return
         embed = discord.Embed(title=f"🔍 Search: '{term}'", description="\n".join(results), color=EMBED_COLORS["help"])
-        embed.set_footer(text=f"#{interaction.channel.name} • The Archivist")
+        embed.set_footer(text=f"#{interaction.channel.name} • OmniTome")
         await interaction.response.send_message(embed=embed)
 
     # --- LIST ---
@@ -358,7 +361,7 @@ class LoreCommands(commands.Cog):
             return
         lines = "\n".join([f"• **{k.title()}**" for k in data[type].keys()])
         embed = discord.Embed(title=f"📋 {type.replace('_', ' ').title()} in #{interaction.channel.name}", description=lines, color=EMBED_COLORS["help"])
-        embed.set_footer(text="The Archivist • Your Lore Keeper")
+        embed.set_footer(text="OmniTome • Your Lore Keeper")
         await interaction.response.send_message(embed=embed)
 
     # --- CUSTOM COMMANDS ---
@@ -371,7 +374,7 @@ class LoreCommands(commands.Cog):
         data.setdefault("custom_commands", {})[name.lower()] = response
         save_data(channel, data)
         embed = discord.Embed(title=f"✅ Custom Command Added: {name.lower()}", description=f"Use `/cmd name:{name.lower()}` to run it.", color=EMBED_COLORS["custom"])
-        embed.set_footer(text=f"#{channel} • The Archivist")
+        embed.set_footer(text=f"#{channel} • OmniTome")
         await interaction.response.send_message(embed=embed)
 
     @app_commands.command(name="cmd", description="Run a custom lore command for this channel")
@@ -386,7 +389,7 @@ class LoreCommands(commands.Cog):
             await interaction.response.send_message(embed=error_embed("Command not found", f"No custom command named `{name}` in this channel.", "/list type:Custom Commands"))
             return
         embed = discord.Embed(title=f"📜 {name.title()}", description=response, color=EMBED_COLORS["custom"])
-        embed.set_footer(text=f"#{interaction.channel.name} • The Archivist")
+        embed.set_footer(text=f"#{interaction.channel.name} • OmniTome")
         await interaction.response.send_message(embed=embed)
 
     @app_commands.command(name="deletecommand", description="Delete a custom command (Admin only)")
@@ -430,6 +433,174 @@ class LoreCommands(commands.Cog):
         )
         await interaction.response.send_message(file=file)
 
+    # --- RANDOM ---
+
+        @app_commands.command(name="random", description="Pull a random lore entry from this channel")
+        @app_commands.describe(type="What type of entry to randomize")
+        @app_commands.choices(type=[
+            app_commands.Choice(name="Character", value="characters"),
+            app_commands.Choice(name="Location", value="locations"),
+            app_commands.Choice(name="Faction", value="factions"),
+            app_commands.Choice(name="Item", value="items"),
+        ])
+        async def random_entry(self, interaction: discord.Interaction, type: str):
+            import random
+            data = load_data(interaction.channel.name)
+            if not data or not data.get(type):
+                await interaction.response.send_message(embed=error_embed("Nothing here yet", f"No {type} found in this channel."))
+                return
+            key = random.choice(list(data[type].keys()))
+            val = data[type][key]
+            embed = discord.Embed(title=f"🎲 Random {type[:-1].title()}: {key.title()}", description=val.get("description", ""), color=EMBED_COLORS.get(type[:-1], EMBED_COLORS["help"]))
+            for k, v in val.items():
+                if k != "description":
+                    embed.add_field(name=k.title(), value=str(v) or "None", inline=True)
+            embed.set_footer(text=f"#{interaction.channel.name} • OmniTome")
+            await interaction.response.send_message(embed=embed)
+
+        # --- RENAME ---
+
+        @app_commands.command(name="rename", description="Rename a lore entry without losing its data")
+        @app_commands.describe(type="Entry type", oldname="Current name", newname="New name")
+        @app_commands.choices(type=[
+            app_commands.Choice(name="Character", value="characters"),
+            app_commands.Choice(name="Location", value="locations"),
+            app_commands.Choice(name="Faction", value="factions"),
+            app_commands.Choice(name="Item", value="items"),
+        ])
+        async def rename(self, interaction: discord.Interaction, type: str, oldname: str, newname: str):
+            channel = interaction.channel.name
+            data = load_data(channel)
+            if not data or oldname.lower() not in data.get(type, {}):
+                await interaction.response.send_message(embed=error_embed("Not found", f"No {type[:-1]} named **{oldname.title()}** exists here."))
+                return
+            data[type][newname.lower()] = data[type].pop(oldname.lower())
+            save_data(channel, data)
+            embed = discord.Embed(title=f"✏️ Renamed: {oldname.title()} → {newname.title()}", color=EMBED_COLORS["success"])
+            embed.set_footer(text=f"#{channel} • OmniTome")
+            await interaction.response.send_message(embed=embed)
+
+        # --- LISTALL ---
+
+        @app_commands.command(name="listall", description="Show every lore entry in this channel at once")
+        async def listall(self, interaction: discord.Interaction):
+            data = load_data(interaction.channel.name)
+            if not data:
+                await interaction.response.send_message(embed=error_embed("No lore found", "This channel has no lore file yet."))
+                return
+            embed = discord.Embed(title=f"📋 All Lore — #{interaction.channel.name}", color=EMBED_COLORS["help"])
+            categories = {
+                "🧍 Characters": "characters",
+                "🗺️ Locations": "locations",
+                "⚔️ Factions": "factions",
+                "🗡️ Items": "items",
+                "⚙️ Custom Commands": "custom_commands",
+            }
+            any_found = False
+            for label, key in categories.items():
+                entries = data.get(key, {})
+                if entries:
+                    any_found = True
+                    lines = ", ".join([k.title() for k in entries.keys()])
+                    embed.add_field(name=f"{label} ({len(entries)})", value=lines, inline=False)
+            if data.get("timeline"):
+                any_found = True
+                embed.add_field(name=f"📅 Timeline ({len(data['timeline'])})", value=", ".join([e['title'] for e in data['timeline']]), inline=False)
+            if not any_found:
+                await interaction.response.send_message(embed=error_embed("Nothing here yet", "No lore has been added to this channel."))
+                return
+            embed.set_footer(text="OmniTome • Your Lore Keeper")
+            await interaction.response.send_message(embed=embed)
+
+        # --- RELATIONSHIP ---
+
+        @app_commands.command(name="relationship", description="Link two characters with a relationship")
+        @app_commands.describe(character1="First character", character2="Second character", type="Relationship type (rival, ally, family, etc.)", description="Description of the relationship")
+        async def relationship(self, interaction: discord.Interaction, character1: str, character2: str, type: str, description: str):
+            channel = interaction.channel.name
+            data = load_data(channel) or {"characters": {}, "locations": {}, "factions": {}, "items": {}, "timeline": [], "custom_commands": {}, "relationships": []}
+            data.setdefault("relationships", []).append({
+                "character1": character1.lower(),
+                "character2": character2.lower(),
+                "type": type,
+                "description": description
+            })
+            save_data(channel, data)
+            embed = discord.Embed(
+                title=f"🔗 Relationship Added",
+                description=f"**{character1.title()}** & **{character2.title()}**",
+                color=EMBED_COLORS["character"]
+            )
+            embed.add_field(name="Type", value=type, inline=True)
+            embed.add_field(name="Description", value=description, inline=False)
+            embed.set_footer(text=f"#{channel} • OmniTome")
+            await interaction.response.send_message(embed=embed)
+
+        @app_commands.command(name="relationships", description="View all relationships for a character")
+        @app_commands.describe(name="Character name")
+        async def relationships(self, interaction: discord.Interaction, name: str):
+            data = load_data(interaction.channel.name)
+            if not data or not data.get("relationships"):
+                await interaction.response.send_message(embed=error_embed("No relationships", "No relationships have been added yet.", "/relationship"))
+                return
+            found = [r for r in data["relationships"] if name.lower() in (r["character1"], r["character2"])]
+            if not found:
+                await interaction.response.send_message(embed=error_embed("None found", f"No relationships found for **{name.title()}**."))
+                return
+            embed = discord.Embed(title=f"🔗 Relationships — {name.title()}", color=EMBED_COLORS["character"])
+            for r in found:
+                other = r["character2"] if r["character1"] == name.lower() else r["character1"]
+                embed.add_field(name=f"{r['type'].title()} with {other.title()}", value=r["description"], inline=False)
+            embed.set_footer(text=f"#{interaction.channel.name} • OmniTome")
+            await interaction.response.send_message(embed=embed)
+
+        # --- NOTES ---
+
+        @app_commands.command(name="addnote", description="Add a freeform note to this channel's lore")
+        @app_commands.describe(title="Short title for the note", content="The note content")
+        async def add_note(self, interaction: discord.Interaction, title: str, content: str):
+            channel = interaction.channel.name
+            data = load_data(channel) or {"characters": {}, "locations": {}, "factions": {}, "items": {}, "timeline": [], "custom_commands": {}, "notes": {}}
+            data.setdefault("notes", {})[title.lower()] = content
+            save_data(channel, data)
+            embed = discord.Embed(title=f"📝 Note Added: {title.title()}", description=content, color=EMBED_COLORS["custom"])
+            embed.set_footer(text=f"#{channel} • OmniTome")
+            await interaction.response.send_message(embed=embed)
+
+        @app_commands.command(name="note", description="Look up a note by title")
+        @app_commands.describe(title="The note title")
+        async def note(self, interaction: discord.Interaction, title: str):
+            data = load_data(interaction.channel.name)
+            if not data or not data.get("notes", {}).get(title.lower()):
+                await interaction.response.send_message(embed=error_embed("Note not found", f"No note titled **{title.title()}** exists here.", "/listnotes"))
+                return
+            embed = discord.Embed(title=f"📝 {title.title()}", description=data["notes"][title.lower()], color=EMBED_COLORS["custom"])
+            embed.set_footer(text=f"#{interaction.channel.name} • OmniTome")
+            await interaction.response.send_message(embed=embed)
+
+        @app_commands.command(name="listnotes", description="List all notes in this channel")
+        async def list_notes(self, interaction: discord.Interaction):
+            data = load_data(interaction.channel.name)
+            if not data or not data.get("notes"):
+                await interaction.response.send_message(embed=error_embed("No notes yet", "Add one with `/addnote`."))
+                return
+            lines = "\n".join([f"• **{k.title()}**" for k in data["notes"].keys()])
+            embed = discord.Embed(title=f"📝 Notes — #{interaction.channel.name}", description=lines, color=EMBED_COLORS["custom"])
+            embed.set_footer(text="OmniTome • Your Lore Keeper")
+            await interaction.response.send_message(embed=embed)
+
+        @app_commands.command(name="deletenote", description="Delete a note (Admin only)")
+        @app_commands.describe(title="The note title")
+        @is_admin()
+        async def delete_note(self, interaction: discord.Interaction, title: str):
+            channel = interaction.channel.name
+            data = load_data(channel)
+            if not data or title.lower() not in data.get("notes", {}):
+                await interaction.response.send_message(embed=error_embed("Not found", f"No note titled **{title.title()}** exists here."))
+                return
+            del data["notes"][title.lower()]
+            save_data(channel, data)
+            await interaction.response.send_message(embed=discord.Embed(title=f"🗑️ Note Deleted: {title.title()}", color=EMBED_COLORS["error"]))
 
 async def setup(bot):
     await bot.add_cog(LoreCommands(bot))
